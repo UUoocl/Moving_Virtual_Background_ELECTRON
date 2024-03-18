@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- for optimal display on high DPI devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.min.css"
+    />
+  </head>
+  <body>
+    <!-- the viewer container must have a defined size -->
+    <div id="viewer" style="width: 100vw; height: 100vh"></div>
+  </body>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three/build/three.module.js",
+        "@photo-sphere-viewer/core": "https://cdn.jsdelivr.net/npm/@photo-sphere-viewer/core/index.module.js"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import { Viewer } from "@photo-sphere-viewer/core";
+
+    const viewer = new Viewer({
+      container: document.getElementById('viewer'),
+      panorama: "\sphere.jpg",
+      mousemove: false,
+      mousewheel: false,
+      navbar: [
+        {visible: false},
+      ]
+    });
+
+    window.obsstudio.getScenes(function (scenes) {
+      console.log(scenes);
+      console.log("Hello Debugger");
+    });
+
+    
+    function keyListener(){ 
+    window.addEventListener("keydown", function (event) {
+      //console.log("key down: ", event)
+    });
+    }
+
+    window.addEventListener("mousewheel", function (event) {
+      console.log("wheel spin: ",event)
+      viewer.animate({
+            yaw: ((event.x/100)*6.27),
+            pitch: ((event.y/100)*1.57),
+            zoom: 0,
+            speed: 1000})
+            .then(setTimeout(() => {
+                console.log("Delayed for 1 second.");
+                isMoving = false
+                    }
+            , 1000))
+    });
+   
+    function mouseListener(){ 
+        const target = document.getElementById('target');
+        console.log("mouse listener add after 5 seconds")
+        window.addEventListener("mousemove", function (event) {
+        console.log("mouse move: ", event)
+        
+        });
+    }
+    
+   setTimeout(mouseListener, 500)
+   setTimeout(keyListener, 500)
+
+    // viewer.addEventListener('position-updated', ({ position, zoomLevel }) => {
+    // console.log(viewer.getZoomLevel())
+    // console.log(`new position is yaw: ${position.yaw} pitch: ${position.pitch} zoom: ${zoomLevel}`);
+    // });
+
+
+    // var isMoving = false;
+    // window.addEventListener("ptz-position-event", function (event) {
+    //   console.log(event)
+    //     if (isMoving == false) {
+    //     console.log(viewer.getPosition(), event.detail.msgContent);
+    //     let positionObj = JSON.parse(
+    //       `{${event.detail.msgContent}}`.replace(/'/g, '"')
+    //     );
+    //     //positionObj = JSON.parse(positionObj)
+    //     //console.log(typeof positionObj, positionObj.pan, positionObj.tilt)
+
+    //     //let p = ((positionObj.pan+147)/294)*6.27
+    //     let p = positionObj.pan;
+    //     let t = positionObj.tilt;
+    //     isMoving = true;
+    //     viewer
+    //       .animate({
+    //         yaw: p,
+    //         pitch: t,
+    //         zoom: 0,
+    //         speed: 3000,
+    //       })
+    //       .then(
+    //         setTimeout(() => {
+    //           console.log("Delayed for 1 second.");
+    //           isMoving = false;
+    //         }, 1000)
+    //       );
+    //     console.log(viewer.getPosition(), event.detail.msgContent, isMoving);
+    //   }
+    // });
+
+    // window.addEventListener('AdvancedSceneSwitcherEvent', function(event) {
+    // console.log("Event Received from AdvSS")
+    // if(isMoving == false){
+    // console.log(viewer.getPosition(), event.detail.msgContent)
+    // let positionObj = JSON.parse(`{${event.detail.msgContent}}`.replace(/'/g,'"'))
+    // //positionObj = JSON.parse(positionObj)
+    // //console.log(typeof positionObj, positionObj.pan, positionObj.tilt)
+
+    // //let p = ((positionObj.pan+147)/294)*6.27
+    // let p = positionObj.pan
+    // let t = positionObj.tilt
+    //     isMoving = true
+    //     viewer.animate({
+    //         yaw: p,
+    //         pitch: t,
+    //         zoom: 0,
+    //         speed: 3000})
+    //         .then(setTimeout(() => {
+    //             console.log("Delayed for 1 second.");
+    //             isMoving = false
+    //                 }
+    //         , 1000))
+    //         console.log(viewer.getPosition(), event.detail.msgContent, isMoving)
+    //     }
+    // })
+
+    // async function GetPTZposition() {
+    // let result = await window.obsstudio.call("GetInputSettings", {
+    //               inputName: "Text (FreeType 2)",
+    //             });
+
+    //   console.log(result, "message appeared");
+    // }
+    // setTimeout(GetPTZposition, 3000);
+  </script>
+</html>
