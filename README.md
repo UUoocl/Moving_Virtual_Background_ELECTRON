@@ -11,7 +11,7 @@ This version is MacOS only.  The same idea could be done in windows.
 
 [USB Video Capture (UVC) Utility for Mac](https://github.com/jtfrey/uvc-util)
 
-[OBS Lua Script to run UVC commands]([https://github.com/marklagendijk/obs-scene-execute-command-script)
+[OBS Lua Script to run UVC commands](https://github.com/marklagendijk/obs-scene-execute-command-script)
 
 
 
