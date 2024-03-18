@@ -13,5 +13,21 @@ This version is MacOS only.  The same idea could be done in windows.
 
 [OBS Lua Script to run UVC commands](https://github.com/marklagendijk/obs-scene-execute-command-script)
 
-
-
+```mermaid
+stateDiagram
+    direction LR
+    A: USB PTZ Camera
+    B: OBS
+    a: uvc util
+    b: lua Script
+    c: browser
+    [*] --> B
+    
+    B --> [*]
+    state B {
+      direction LR
+    A --> a
+      a --> b
+      b --> c
+    }
+```
