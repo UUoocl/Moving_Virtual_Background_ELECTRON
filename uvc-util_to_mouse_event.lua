@@ -15,7 +15,7 @@ obs = obslua
 
 source_name = ""
 command = ""
-refresh = 300000
+refresh = 1000
 
 output = ""
 previous_output = ""
@@ -44,8 +44,8 @@ end
 
 function script_defaults(settings)
     obs.obs_data_set_default_string(settings, "command",
-        "/bin/cat /usr/share/dict/words | /usr/bin/sort -R | /usr/bin/head | /usr/bin/paste -s -d' ' -")
-    obs.obs_data_set_default_int(settings, "refresh", 300000)
+        "/Applications/Utilities/uvc-util -I 0 -o pan-tilt-abs")
+    obs.obs_data_set_default_int(settings, "refresh", 1000)
 end
 
 function script_description()
@@ -75,6 +75,7 @@ end
 
 function run_command()
     --Get the Cammera Position with uvc-util command "{Path}/uvc-util -I 0 -o pan-tilt-abs"
+    --/Applications/Utilities/uvc-util -I 0 -o pan-tilt-abs
     obs.script_log(obs.LOG_INFO, "Executing command: " .. command)
     output = os.capture(command)
     obs.script_log(obs.LOG_INFO, "Output: " .. output)
@@ -84,7 +85,10 @@ function run_command()
     local pt = string.gsub(output,"{pan=", "")
     local pt = string.gsub(pt,"}", "")
     local pEnd = string.find(pt,",") 
-    local p = math.floor(((tonumber(string.sub(pt,0,pEnd-1))+500000)/1000000)*100)
+    -- Insta360 min and max pan -500000 to +500000.  Scaled to 0-100
+    -- OBSBOT Tiny 2 min and max pan -450000 to +450000.  Scaled to 0-100
+    local p = math.floor(((tonumber(string.sub(pt,0,pEnd-1))+450000)/900000)*100)
+    -- Insta360 min and max tilt -300000 to +300000.  Scaled to 0-100
     local t = math.floor(((tonumber(string.sub(pt,pEnd+6))+300000)/600000)*100)
     --output = p .." " .. t
     --set_source_text()
