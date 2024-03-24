@@ -1,9 +1,10 @@
 # Moving_Virtual_Background
-Use the Photo Sphere Viewer Javascript library as a virtual background.  
-
-Making a virtual background that follows the position of a USB PTZ camera.  
+The project connects a PTZ usb camera and a browser source via an OBS lua script.
 
 This version is MacOS only.  The same idea could be done in windows.  
+
+An example use is creating a moving virtual background by sending the PTZ data to the Photo Sphere Viewer Javascript library.  
+
 
 ### Repositories 
 
@@ -21,6 +22,7 @@ stateDiagram
     a: uvc util
     b: lua Script
     c: browser
+    d: Text Source
     [*] --> B
     
     B --> [*]
@@ -29,5 +31,6 @@ stateDiagram
     A --> a
       a --> b
       b --> c
+      b --> d 
     }
 ```
