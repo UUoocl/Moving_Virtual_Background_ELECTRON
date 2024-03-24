@@ -47,19 +47,22 @@
       //console.log("key down: ", event)
     });
     }
-
+    var isMoving = false;
     window.addEventListener("mousewheel", function (event) {
       console.log("wheel spin: ",event)
+      if (isMoving == false) {
       viewer.animate({
             yaw: ((event.x/100)*6.27),
             pitch: ((event.y/100)*1.57),
-            zoom: 0,
+            zoom: Math.abs(event.deltaX),
             speed: 1000})
             .then(setTimeout(() => {
                 console.log("Delayed for 1 second.");
                 isMoving = false
                     }
             , 1000))
+      }
+
     });
    
     function mouseListener(){ 
@@ -71,8 +74,8 @@
         });
     }
     
-   setTimeout(mouseListener, 500)
-   setTimeout(keyListener, 500)
+   //setTimeout(mouseListener, 500)
+   //setTimeout(keyListener, 500)
 
     // viewer.addEventListener('position-updated', ({ position, zoomLevel }) => {
     // console.log(viewer.getZoomLevel())
